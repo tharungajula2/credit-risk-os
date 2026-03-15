@@ -66,13 +66,21 @@ export default function Sidebar({ notes }: SidebarProps) {
       }}
     >
       {/* ── Premium ID Card Branding (Top) ── */}
-      <div
-        style={{
-          padding: "1.25rem 1.25rem 1rem",
-          background: "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
+      <Link href="/" style={{ textDecoration: "none", display: "block" }}>
+        <div
+          style={{
+            padding: "1.25rem 1.25rem 1rem",
+            background: "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            transition: "background 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "linear-gradient(180deg, rgba(45,105,230,0.08) 0%, transparent 100%)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)";
+          }}
+        >
         <div 
           style={{
             display: "flex",
@@ -136,6 +144,7 @@ export default function Sidebar({ notes }: SidebarProps) {
           </div>
         </div>
       </div>
+      </Link>
 
       {/* ── Search ── */}
       <div style={{ padding: "0.75rem 1rem" }}>

@@ -1,5 +1,5 @@
 ---
-title: Tharun the Architect
+title: Tharun Gajula Quant Risk Professional
 date: 2026-03-14
 tags:
   - credit-risk

@@ -1,4 +1,4 @@
-import { getAllNotes, getGraphData } from "@/lib/markdown";
+import { getAllNotes, getGraphData, getAllProjects } from "@/lib/markdown";
 import HomeDashboard from "@/components/HomeDashboard";
 
 export const metadata = {
@@ -7,9 +7,10 @@ export const metadata = {
 };
 
 export default async function Home() {
-  const [notes, graphData] = await Promise.all([
+  const [notes, graphData, projects] = await Promise.all([
     getAllNotes(),
     getGraphData(),
+    getAllProjects(),
   ]);
 
   return (
@@ -74,7 +75,7 @@ export default async function Home() {
           padding: "1rem",
         }}
       >
-        <HomeDashboard notes={notes} graphData={graphData} />
+        <HomeDashboard notes={notes} graphData={graphData} projects={projects} />
       </main>
     </div>
   );

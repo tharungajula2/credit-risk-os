@@ -1,21 +1,35 @@
 "use client";
 
-import { useState } from "react";
-import { LayoutGrid, Network } from "lucide-react";
+import { useState, useEffect } from "react";
+import { LayoutGrid, Network, Briefcase, User } from "lucide-react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import UniverseGrid from "@/components/UniverseGrid";
 import GraphView from "@/components/GraphView";
-import type { NoteListItem, GraphData } from "@/lib/markdown";
+import ProjectsView from "@/components/ProjectsView";
+import type { NoteListItem, GraphData, ProjectListItem } from "@/lib/markdown";
 
 interface HomeDashboardProps {
   notes: NoteListItem[];
   graphData: GraphData;
+  projects: ProjectListItem[];
 }
 
 export default function HomeDashboard({
   notes,
   graphData,
+  projects,
 }: HomeDashboardProps) {
-  const [view, setView] = useState<"grid" | "graph">("graph");
+  const [view, setView] = useState<"grid" | "graph" | "projects">("graph");
+  const searchParams = useSearchParams();
+
+  // ── Sync View State from URL Query ──
+  useEffect(() => {
+    const urlView = searchParams.get("view");
+    if (urlView === "projects") {
+      setView("projects");
+    }
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col w-full" style={{ minHeight: "85vh" }}>
@@ -128,6 +142,64 @@ export default function HomeDashboard({
             <Network size={14} />
             Graph
           </button>
+          <button
+            onClick={() => setView("projects")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              padding: "0.45rem 0.85rem",
+              borderRadius: "0.55rem",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              border: "none",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              background:
+                view === "projects"
+                  ? "rgba(255,255,255,0.1)"
+                  : "transparent",
+              color:
+                view === "projects"
+                  ? "#fff"
+                  : "rgba(255,255,255,0.3)",
+            }}
+          >
+            <Briefcase size={14} />
+            Projects
+          </button>
+
+          <div style={{ width: "1px", background: "rgba(255,255,255,0.1)", margin: "0.25rem", alignSelf: "stretch" }} />
+
+          <Link
+            href="/notes/Tharun-Gajula-Quant-Risk-Professional"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              padding: "0.45rem 0.85rem",
+              borderRadius: "0.55rem",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              border: "none",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              background: "transparent",
+              color: "rgba(255,255,255,0.3)",
+              textDecoration: "none",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "rgba(255,255,255,0.3)";
+              e.currentTarget.style.background = "transparent";
+            }}
+          >
+            <User size={14} />
+            Profile
+          </Link>
         </div>
       </div>
 
@@ -147,10 +219,12 @@ export default function HomeDashboard({
           >
             <UniverseGrid notes={notes} />
           </div>
-        ) : (
+        ) : view === "graph" ? (
           <div style={{ height: "75vh", width: "100%" }}>
             <GraphView graphData={graphData} />
           </div>
+        ) : (
+          <ProjectsView projects={projects} />
         )}
       </div>
     </div>

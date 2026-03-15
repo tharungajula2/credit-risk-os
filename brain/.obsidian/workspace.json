@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "IFRS-9-and-ECL.md",
+                "file": "Advanced-ML-in-Risk.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "IFRS-9-and-ECL"
+              "title": "Advanced-ML-in-Risk"
             }
           }
         ]
@@ -182,6 +182,17 @@
   },
   "active": "2c557b97fd158e1c",
   "lastOpenFiles": [
+    "portfolio/IRB-Credit-Scorecard.md",
+    "Tharun-Gajula-Quant-Risk-Professional.md",
+    "Tharun-Quant-Risk_Professional.md",
+    "Tharun-Quant Analyst.md",
+    "portfolio/Unstructured-Text-Pipeline.md",
+    "portfolio/Socio-Economic-Classifier.md",
+    "portfolio/HR-Attrition-Modeling.md",
+    "portfolio/ANN-Customer-Churn.md",
+    "portfolio/1_credit_risk_modelling.md",
+    "portfolio",
+    "IFRS-9-and-ECL.md",
     "AML-and-Financial-Crime-Models.md",
     "Market-Risk-and-FRTB.md",
     "Climate-Risk-Modeling.md",
@@ -198,16 +209,7 @@
     "Counterparty-Credit-Risk-CCR.md",
     "Loss-Given-Default.md",
     "Exposure-at-Default.md",
-    "Probability-of-Default.md",
-    "IFRS-9-and-ECL.md",
-    "RWA-Risk-Weighted-Assets.md",
-    "Basel-IRB-Framework.md",
-    "Economic-Capital-Basics.md",
-    "Expected-vs-Unexpected-Loss.md",
-    "2026-03-14.md",
     "_deep-research-report.bak",
-    "deep-research-report.md",
-    "Unconfirmed 185175.crdownload",
-    "test-node.md"
+    "Unconfirmed 185175.crdownload"
   ]
 }
