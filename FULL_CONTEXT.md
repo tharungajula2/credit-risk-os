@@ -72,3 +72,13 @@ This indicates a severe mismatch between how `ai` (the v6 backend package) defin
 
 **Next Chat Action Item**:
 When resuming, the very first task MUST BE to definitively resolve the Vercel AI SDK v6 type mismatch in `CrosAIChat.tsx`. Do not attempt to style or polish the chat UI until `useChat()` is cleanly importing and mapping messages according to the strict v6 standard, without TypeScript throwing `append` or `m.parts` errors.
+
+---
+
+## 8. Vercel Deployment vs Localhost (The TypeScript Strictness Rule)
+A critical learning regarding deploying updates (like Markdown frontmatter or new components): **Vercel will silently fail deployments and serve stale code if the Next.js `npm run build` process encounters a TypeScript error.**
+
+- **The Illusion of `npm run dev`**: When testing locally via `npm run dev`, Next.js acts gracefully. It will swallow TypeScript errors and render your new files (e.g., `Phase 7. Sandbox`) seamlessly.
+- **The Reality of Production (`npm run build`)**: Vercel triggers a strict production build. If *any* component in your project has a type mismatch (such as the `CrosAIChat.tsx` SDK v6 error), Vercel instantly aborts the deployment. It will not show a "Broken Page" to users; it simply refuses to update, leaving you wondering why your new Markdown files or UI updates aren't showing up live.
+- **The Temporary Fix (The Nuclear Option)**: If you need to force a deployment through while a component is genuinely broken at the type level, you can inject `// @ts-nocheck` at the very top of the failing file. This temporarily mutes the typechecker, allows `npm run build` to pass, and forces Vercel to sync your new Markdown data/UI to production. 
+- **Rule of Thumb**: Always run `npm run build` locally before pushing to GitHub if you are unsure why Vercel isn't updating.
