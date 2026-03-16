@@ -3,7 +3,7 @@ import { getAllNotes, getGraphData, getAllProjects } from "@/lib/markdown";
 import HomeDashboard from "@/components/HomeDashboard";
 
 export const metadata = {
-  title: "Credit Risk OS",
+  title: "Quant OS",
   description: "A Zettelkasten-powered knowledge base for credit risk.",
 };
 

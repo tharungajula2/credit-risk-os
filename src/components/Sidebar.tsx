@@ -39,14 +39,14 @@ export default function Sidebar({ notes }: SidebarProps) {
 
     const groups: Record<string, NoteListItem[]> = {};
     for (const note of filtered) {
-      const cluster = note.frontmatter.cluster || "Uncategorized";
+      const cluster = note.frontmatter.cluster || "Isolated Nodes";
       if (!groups[cluster]) groups[cluster] = [];
       groups[cluster].push(note);
     }
 
     return Object.entries(groups).sort(([a], [b]) => {
-      if (a === "Uncategorized") return 1;
-      if (b === "Uncategorized") return -1;
+      if (a === "Isolated Nodes") return 1;
+      if (b === "Isolated Nodes") return -1;
       return a.localeCompare(b);
     });
   }, [notes, searchQuery]);
@@ -253,7 +253,7 @@ export default function Sidebar({ notes }: SidebarProps) {
               {items.map((note) => {
                 const href = `/notes/${note.slug}`;
                 const isActive = pathname === href;
-                const isLocked = cluster === "Phase 5. Hard Portfolios & Stress" || cluster === "Phase 6. Broader Risk Domains";
+                const isLocked = cluster === "Phase 5: Production Monitoring" || cluster === "Phase 6: Deployment Lifecycle";
 
                 return (
                   <Link

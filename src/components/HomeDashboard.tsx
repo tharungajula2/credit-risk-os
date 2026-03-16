@@ -64,7 +64,7 @@ export default function HomeDashboard({
               gap: "1rem",
             }}
           >
-            Credit Risk OS
+            Quant OS
             
             {/* ── OS Sync Mastery Pill ── */}
             <div

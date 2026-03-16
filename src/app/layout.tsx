@@ -4,7 +4,7 @@ import "./globals.css";
 import { getAllNotes } from "@/lib/markdown";
 import Sidebar from "@/components/Sidebar";
 import MobileHeader from "@/components/MobileHeader";
-import CrosAIChat from "@/components/CrosAIChat";
+import VianAIChat from "@/components/VianAIChat";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Credit Risk OS",
+  title: "Quant OS",
   description: "A Zettelkasten-powered knowledge base for credit risk.",
 };
 
@@ -53,7 +53,7 @@ export default async function RootLayout({
             </main>
           </div>
         </div>
-        <CrosAIChat />
+        <VianAIChat />
       </body>
     </html>
   );

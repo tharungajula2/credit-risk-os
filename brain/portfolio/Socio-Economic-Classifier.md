@@ -3,6 +3,7 @@ title: "Socio-Economic Household Classification"
 date: "2026-03-19"
 summary: "End-to-end pipeline handling noisy national survey datasets to classify household status, peaking at 83.5% accuracy via Ensembles."
 tags: ["Python", "XGBoost", "Ensemble", "PCA", "Data Science"]
+cluster: "Quantitative Portfolio"
 ---
 
 # India Survey Data: Socio-Economic Classifier

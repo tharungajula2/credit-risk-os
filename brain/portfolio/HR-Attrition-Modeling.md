@@ -3,6 +3,7 @@ title: "Employee Retention & Predictive Attrition Modeling"
 date: "2026-03-19"
 summary: "Evaluated Logistic Regression and advanced Tree-Based ensembles, optimizing a Random Forest to achieve 96.5% accuracy in predicting HR flight risks."
 tags: ["Python", "Scikit-learn", "Random Forest", "GridSearchCV", "Predictive ML"]
+cluster: "Quantitative Portfolio"
 ---
 
 # HR Attrition & Performance Analytics

@@ -30,13 +30,14 @@ const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
 
 // ── Premium cluster color palette ──
 const CLUSTER_COLORS: Record<string, string> = {
-  "Phase 1. Bank Loss Engine": "#60a5fa",
-  "Phase 2. Regulatory Skeleton": "#a78bfa",
-  "Phase 3. Core Credit Risk Trinity": "#2dd4bf",
-  "Phase 4. Model Build & Validate": "#f472b6",
-  "Phase 5. Hard Portfolios & Stress": "#fbbf24",
-  "Phase 6. Broader Risk Domains": "#34d399",
-  "Phase 7. Sandbox": "#a3a3a3",
+  "System Atlas": "#ffffff",
+  "Phase 1: The Macro Picture": "#60a5fa",
+  "Phase 2: Data Architecture": "#a78bfa",
+  "Phase 3: The Algorithmic Engine": "#2dd4bf",
+  "Phase 4: Model Validation": "#f472b6",
+  "Phase 5: Production Monitoring": "#fbbf24",
+  "Phase 6: Deployment Lifecycle": "#34d399",
+  "Quantitative Portfolio": "#f87171",
   Others: "#9ca3af",
 };
 
@@ -82,7 +83,7 @@ export default function GraphView({ graphData }: GraphViewProps) {
   const handleNodeClick = useCallback(
     (node: any) => {
       if (node?.id) {
-        const isLocked = node.group === "Phase 5. Hard Portfolios & Stress" || node.group === "Phase 6. Broader Risk Domains";
+        const isLocked = node.group === "Phase 5: Production Monitoring" || node.group === "Phase 6: Deployment Lifecycle";
         if (!isLocked) {
           router.push(`/notes/${node.id}`);
         }
@@ -187,7 +188,7 @@ export default function GraphView({ graphData }: GraphViewProps) {
             ctx.shadowBlur = 4;
           }
           
-          const isLocked = n.group === "Phase 5. Hard Portfolios & Stress" || n.group === "Phase 6. Broader Risk Domains";
+          const isLocked = n.group === "Phase 5: Production Monitoring" || n.group === "Phase 6: Deployment Lifecycle";
           const displayName = isLocked ? `🔒 ${n.name}` : n.name;
           
           ctx.fillText(displayName, x, y + radius + 3);
@@ -252,51 +253,6 @@ export default function GraphView({ graphData }: GraphViewProps) {
             {btn.icon}
           </button>
         ))}
-      </div>
-
-      {/* ── Cluster Legend (Bottom Left) ── */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "1.5rem",
-          left: "1.5rem",
-          zIndex: 20,
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "0.5rem 1rem",
-          maxWidth: "700px",
-          pointerEvents: "none",
-        }}
-      >
-        {Object.entries(CLUSTER_COLORS)
-          .filter(([k]) => k !== "Others")
-          .map(([name, color]) => (
-            <div
-              key={name}
-              style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}
-            >
-              <div
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: color,
-                  boxShadow: `0 0 5px ${color}55`,
-                }}
-              />
-              <span
-                style={{
-                  fontSize: "9px",
-                  fontWeight: 700,
-                  color: "rgba(255,255,255,0.25)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                }}
-              >
-                {name}
-              </span>
-            </div>
-          ))}
       </div>
     </div>
   );

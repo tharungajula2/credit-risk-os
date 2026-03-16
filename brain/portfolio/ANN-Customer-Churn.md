@@ -3,6 +3,7 @@ title: "Bank Churn Prediction using Neural Networks"
 date: "2026-03-19"
 summary: "Built an Artificial Neural Network classifying bank customer churn, optimizing thresholds for 75% recall."
 tags: ["Python", "TensorFlow", "Keras", "Deep Learning"]
+cluster: "Quantitative Portfolio"
 ---
 
 # Bank Customer Churn Prediction

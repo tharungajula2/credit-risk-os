@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
 import { BrainCircuit, X, Lock, Send, Unlock } from "lucide-react";
 
-export default function CrosAIChat() {
+export default function VianAIChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
@@ -49,7 +49,7 @@ export default function CrosAIChat() {
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 cursor-pointer ${isOpen ? "bg-gray-800 text-white" : "bg-blue-600 hover:bg-blue-500 text-white"
           }`}
-        title="Toggle CROS AI"
+        title="Toggle Vian AI"
       >
         {isOpen ? <X size={24} /> : <BrainCircuit size={24} />}
       </button>
@@ -63,7 +63,7 @@ export default function CrosAIChat() {
           <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.03]">
             <div className="flex items-center gap-2">
               <BrainCircuit size={18} className="text-blue-400" />
-              <span className="font-bold text-white">CROS AI</span>
+              <span className="font-bold text-white">Vian AI</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
@@ -81,7 +81,7 @@ export default function CrosAIChat() {
               <div className="flex-1 flex flex-col items-center justify-center w-full">
                 <Lock size={48} className="text-red-500 mb-4 opacity-80" />
                 <h3 className="text-red-500 font-mono text-[10px] md:text-xs font-bold tracking-widest mb-6 text-center leading-relaxed px-4">
-                  CROS AI TERMINAL LOCKED.<br />ENTER CLEARANCE CODE.
+                  Vian AI TERMINAL LOCKED.<br />ENTER CLEARANCE CODE.
                 </h3>
                 <form onSubmit={handlePasswordSubmit} className="flex flex-col gap-3 w-full max-w-[220px]">
                   <input
@@ -123,7 +123,7 @@ export default function CrosAIChat() {
                 {isLoading && (
                   <div className="flex justify-start w-full">
                     <div className="bg-white/5 text-gray-400 border border-white/5 rounded-2xl rounded-tl-sm px-4 py-3 text-[0.8rem] font-mono animate-pulse mr-auto w-fit max-w-[85%]">
-                      CROS AI is typing...
+                      Vian AI is typing...
                     </div>
                   </div>
                 )}
@@ -141,7 +141,7 @@ export default function CrosAIChat() {
                   className="flex-1 bg-transparent px-4 py-2 text-sm text-white focus:outline-none placeholder:text-white/30"
                   value={input}
                   onChange={handleInputChange}
-                  placeholder="Ask CROS AI..."
+                  placeholder="Ask Vian AI..."
                 />
                 <button
                   type="submit"

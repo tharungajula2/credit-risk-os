@@ -3,6 +3,7 @@ title: "IRB Credit Scorecard & PD Modeling"
 date: "2026-03-19"
 summary: "Developed & validated PD/EAD/LGD models with strict KS/AUC validation and PSI stability monitoring."
 tags: ["Python", "XGBoost", "Scikit-learn", "SQL", "Credit Risk"]
+cluster: "Quantitative Portfolio"
 ---
 
 # AI-Powered Credit Risk Modeling (PD Scorecard)

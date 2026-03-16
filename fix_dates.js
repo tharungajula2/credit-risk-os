@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log("Starting Credit Risk OS automated format script...");
+console.log("Starting Quant OS automated format script...");
 
 const brainDir = path.join(__dirname, 'brain');
 const files = fs.readdirSync(brainDir).filter(f => f.endsWith('.md') && f !== 'Tharun-Kumar-Gajula.md');

@@ -39,7 +39,7 @@ export default function MobileHeader() {
       <div className="absolute left-1/2 -translate-x-1/2">
         <Link href="/" className="no-underline">
           <span className="text-sm font-bold tracking-[0.1em] uppercase text-white/90">
-            Credit Risk OS
+            Quant OS
           </span>
         </Link>
       </div>

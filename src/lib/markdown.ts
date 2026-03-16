@@ -12,6 +12,8 @@ export interface NoteFrontmatter {
   cluster: string;
   progress?: number;
   tags?: string[];
+  links?: string[];
+  graph_exclude?: boolean;
   [key: string]: unknown;
 }
 
@@ -221,18 +223,26 @@ export async function getGraphData(): Promise<GraphData> {
     const { data } = matter(raw);
     const fm = data as NoteFrontmatter;
 
+    if (fm.graph_exclude) {
+      continue;
+    }
+
     slugSet.add(slug);
     nodes.push({
       id: slug,
       name: fm.title ?? slug,
       val: 1,
-      group: fm.cluster ?? 'Uncategorized',
+      group: fm.cluster ?? 'Isolated Nodes',
     });
   }
 
   // Second pass: extract [[wikilinks]] to build links
   for (const filename of files) {
     const sourceSlug = filename.replace(/\.md$/, '');
+    
+    // Skip reading links from nodes we excluded in the first pass
+    if (!slugSet.has(sourceSlug)) continue;
+
     const raw = fs.readFileSync(path.join(BRAIN_DIR, filename), 'utf-8');
     const { content } = matter(raw);
 

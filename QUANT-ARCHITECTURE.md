@@ -1,6 +1,6 @@
-# CROS - Architecture & Context
+# Quant OS - Architecture & Context
 
-**Project Name:** Credit Risk OS
+**Project Name:** Quant OS
 **Phase:** Core Initialized (Strike 15 Save State)
 
 ## Tech Stack
@@ -13,7 +13,7 @@
 
 ## Core System Architecture
 
-Credit Risk OS operates essentially as a headless knowledge-graph interface built over a local ecosystem of Markdown files. It functions similarly to Obsidian but lives natively on the web.
+Quant OS operates essentially as a headless knowledge-graph interface built over a local ecosystem of Markdown files. It functions similarly to Obsidian but lives natively on the web.
 
 ### 1. The Brain (Database)
 The `brain/` directory acts as the sole database. Every `.md` file represents a node in the knowledge graph. These files contain:
