@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, FileText, X, Brain, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, FileText, X, Brain, ChevronLeft, ChevronRight, Lock } from "lucide-react";
 import type { NoteListItem } from "@/lib/markdown";
 
 interface SidebarProps {
@@ -139,7 +139,7 @@ export default function Sidebar({ notes }: SidebarProps) {
                 opacity: 0.9,
               }}
             >
-              Risk Quant
+              Concept Phase
             </p>
           </div>
         </div>
@@ -253,12 +253,19 @@ export default function Sidebar({ notes }: SidebarProps) {
               {items.map((note) => {
                 const href = `/notes/${note.slug}`;
                 const isActive = pathname === href;
+                const isLocked = cluster === "Phase 5. Hard Portfolios & Stress" || cluster === "Phase 6. Broader Risk Domains";
 
                 return (
                   <Link
                     key={note.slug}
-                    href={href}
-                    onClick={() => setIsOpen(false)}
+                    href={isLocked ? "#" : href}
+                    onClick={(e) => {
+                      if (isLocked) {
+                        e.preventDefault();
+                      } else {
+                        setIsOpen(false);
+                      }
+                    }}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -270,6 +277,8 @@ export default function Sidebar({ notes }: SidebarProps) {
                       textDecoration: "none",
                       color: isActive
                         ? "rgba(255,255,255,0.95)"
+                        : isLocked
+                        ? "rgba(255,255,255,0.15)"
                         : "rgba(255,255,255,0.38)",
                       background: isActive
                         ? "rgba(96,165,250,0.1)"
@@ -279,9 +288,10 @@ export default function Sidebar({ notes }: SidebarProps) {
                         : "2px solid transparent",
                       transition: "all 0.15s ease",
                       lineHeight: 1.35,
+                      cursor: isLocked ? "not-allowed" : "pointer",
                     }}
                     onMouseEnter={(e) => {
-                      if (!isActive) {
+                      if (!isActive && !isLocked) {
                         e.currentTarget.style.background =
                           "rgba(255,255,255,0.03)";
                         e.currentTarget.style.color =
@@ -289,20 +299,31 @@ export default function Sidebar({ notes }: SidebarProps) {
                       }
                     }}
                     onMouseLeave={(e) => {
-                      if (!isActive) {
+                      if (!isActive && !isLocked) {
                         e.currentTarget.style.background = "transparent";
                         e.currentTarget.style.color =
                           "rgba(255,255,255,0.38)";
                       }
                     }}
                   >
-                    <FileText
-                      size={12}
-                      style={{
-                        flexShrink: 0,
-                        opacity: isActive ? 0.7 : 0.25,
-                      }}
-                    />
+                    {isLocked ? (
+                      <Lock
+                        size={12}
+                        style={{
+                          flexShrink: 0,
+                          opacity: 0.3,
+                          color: "#ef4444",
+                        }}
+                      />
+                    ) : (
+                      <FileText
+                        size={12}
+                        style={{
+                          flexShrink: 0,
+                          opacity: isActive ? 0.7 : 0.25,
+                        }}
+                      />
+                    )}
                     <span
                       style={{
                         overflow: "hidden",

@@ -49,7 +49,7 @@ export default function HomeDashboard({
               marginBottom: "0.4rem",
             }}
           >
-            Knowledge · Risk · Intelligence
+            Risk · Quant · Frameworks
           </p>
           <h1
             style={{

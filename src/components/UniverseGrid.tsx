@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Lock } from "lucide-react";
 import type { NoteListItem } from "@/lib/markdown";
 
 interface UniverseGridProps {
@@ -85,10 +86,17 @@ export default function UniverseGrid({ notes }: UniverseGridProps) {
     >
       {sortedNotes.map((note) => {
         const { badge, glowColor } = palette(note.frontmatter.cluster);
+        const isLocked = note.frontmatter.cluster === "Phase 5. Hard Portfolios & Stress" || note.frontmatter.cluster === "Phase 6. Broader Risk Domains";
 
         return (
           <motion.li key={note.slug} variants={card} style={{ minWidth: 0 }}>
-            <Link href={`/notes/${note.slug}`} style={{ textDecoration: "none", display: "block", height: "100%" }}>
+            <Link 
+              href={isLocked ? "#" : `/notes/${note.slug}`} 
+              onClick={(e) => {
+                if (isLocked) e.preventDefault();
+              }}
+              style={{ textDecoration: "none", display: "block", height: "100%" }}
+            >
 
               {/* ── Glass Card ── */}
               <div
@@ -109,15 +117,18 @@ export default function UniverseGrid({ notes }: UniverseGridProps) {
                   border: "1px solid rgba(255,255,255,0.08)",
                   boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07)",
                   transition: "background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
-                  cursor: "pointer",
+                  cursor: isLocked ? "not-allowed" : "pointer",
+                  opacity: isLocked ? 0.6 : 1,
                 }}
                 onMouseEnter={(e) => {
+                  if (isLocked) return;
                   const el = e.currentTarget;
                   el.style.background = "rgba(255,255,255,0.055)";
                   el.style.borderColor = "rgba(255,255,255,0.14)";
                   el.style.boxShadow = "0 12px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12), 0 0 40px rgba(255,255,255,0.04)";
                 }}
                 onMouseLeave={(e) => {
+                  if (isLocked) return;
                   const el = e.currentTarget;
                   el.style.background = "rgba(255,255,255,0.03)";
                   el.style.borderColor = "rgba(255,255,255,0.08)";
@@ -162,8 +173,11 @@ export default function UniverseGrid({ notes }: UniverseGridProps) {
                     </span>
                   ) : <span />}
 
-                  <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "1.1rem", lineHeight: 1, transition: "color 0.25s" }}
-                    aria-hidden>↗</span>
+                  {isLocked ? (
+                    <Lock size={16} strokeWidth={2.5} style={{ color: "rgba(239, 68, 68, 0.6)" }} />
+                  ) : (
+                    <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "1.1rem", lineHeight: 1, transition: "color 0.25s" }} aria-hidden>↗</span>
+                  )}
                 </div>
 
                 {/* ── Title ── */}

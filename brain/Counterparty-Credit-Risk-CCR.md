@@ -2,7 +2,7 @@
 title: "Counterparty Credit Risk (CCR) and CVA"
 date: 2026-03-19
 tags: [CCR, CVA, derivatives, Basel]
-cluster: Phase 3. Core Credit Risk Trinity
+cluster: Phase 5. Hard Portfolios & Stress
 progress: 0
 ---
 

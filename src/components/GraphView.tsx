@@ -81,7 +81,12 @@ export default function GraphView({ graphData }: GraphViewProps) {
 
   const handleNodeClick = useCallback(
     (node: any) => {
-      if (node?.id) router.push(`/notes/${node.id}`);
+      if (node?.id) {
+        const isLocked = node.group === "Phase 5. Hard Portfolios & Stress" || node.group === "Phase 6. Broader Risk Domains";
+        if (!isLocked) {
+          router.push(`/notes/${node.id}`);
+        }
+      }
     },
     [router]
   );
@@ -181,7 +186,11 @@ export default function GraphView({ graphData }: GraphViewProps) {
             ctx.shadowColor = "rgba(0,0,0,0.8)";
             ctx.shadowBlur = 4;
           }
-          ctx.fillText(n.name, x, y + radius + 3);
+          
+          const isLocked = n.group === "Phase 5. Hard Portfolios & Stress" || n.group === "Phase 6. Broader Risk Domains";
+          const displayName = isLocked ? `🔒 ${n.name}` : n.name;
+          
+          ctx.fillText(displayName, x, y + radius + 3);
           ctx.shadowBlur = 0;
         }}
         nodePointerAreaPaint={(node, color, ctx) => {
