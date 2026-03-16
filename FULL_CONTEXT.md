@@ -15,7 +15,7 @@ Credit Risk OS is an advanced spatial learning environment and professional quan
 The system operates completely file-based without an external database, reading from local Markdown structures:
 - `brain/`: Contains the core Zettelkasten knowledge notes (e.g., Credit Risk concepts, probability models). Files here populate the Universe Grid and the active 2D Physics Graph. (The Feynman Hook narrative layer was manually purged from all 21 files to leave pure academic content).
 - `brain/portfolio/`: Strictly separated from the core graph. Contains structured project summaries defining the user's professional portfolio to be rendered exclusively in the Projects view.
-- `shelf/temp_files/`: A newly designated workspace folder added to `.gitignore`. It contains all legacy auxiliary data processing scripts (e.g., Markdown parsers, AI ingestion scripts, fix links, vault hydration) to keep the root directory pristine.
+- `shelf/temp_files/`: A newly designated workspace folder added to `.gitignore`. It contains all auxiliary data processing scripts to keep the root directory pristine. MOST IMPORTANTLY, it contains **`format_frontmatter.js`** — a pure JavaScript executable designed to reliably and safely bulk-edit markdown YAML frontmatter without falling victim to regex/newline system anomalies.
 - `src/lib/markdown.ts`: The absolute data layer of the app. It specifically exports separate logical getters (`getAllNotes()` vs `getAllProjects()`) ensuring standard notes and portfolio cases never bleed into each other. It handles the complex `convertWikilinks` logic.
 - `src/app/notes/[slug]/page.tsx` & `src/app/portfolio/[slug]/page.tsx`: Dynamic server routes that fetch and render the specific markdown payload.
 
@@ -44,9 +44,21 @@ The system operates completely file-based without an external database, reading 
   4. Phase 4. Model Build & Validate
   5. Phase 5. Hard Portfolios & Stress
   6. Phase 6. Broader Risk Domains
-  7. Others
+  7. Phase 7. Sandbox (Used for experimental learning notes and temporary ideations)
+  8. Others
 
-## 6. Critical Active Blocker: Vercel AI SDK v6 vs TypeScript (Chat UI)
+- **JS Ecosystem Standardization & Bulk Markdown Scripting**: Previously, bulk-updating Markdown files (like synchronizing dates or appending `progress: 0`) using terminal hooks like PowerShell or Python proved disastrous due to CLI execution swallowing and Windows/Unix `\r\n` line-end mismatches. The system now universally relies on pure node `fs` JavaScript execution. 
+   - **CRITICAL NOTE FOR FUTURE SESSIONS**: If you ever need to bulk-modify brain markdown files or frontmatter, **DO NOT** use generic terminal commands. **ALWAYS** refer to and execute/modify `shelf/temp_files/format_frontmatter.js`. This script splits the document via robust native arrays, explicitly checking `---` bounds to manipulate frontmatter cleanly, representing the absolute gold-standard template for programmatic data entry in this repository.
+
+## 6. CROS AI Chat Interface Learnings (UI/UX Engineering Triumphs)
+Building the `CrosAIChat` overlay was a complex exercise in CSS architecture to ensure it integrated seamlessly over the 3D Graph and Universe Grid without breaking layout constraints. These final learnings represent what *perfectly* worked:
+- **Liquid Glass Pixel Perfection**: The glassmorphic chat container achieves its premium aesthetic through a direct `backdropFilter: "blur(24px)"`, an ultra-thin border (`border-white/10`), and a highly translucent dark background (`bg-[#0a0a0c]/80` or `rgba(255,255,255,0.03)`). It is vital to maintain this exact class combination; solid, non-transparent hex colors immediately destroy the spatial depth illusion. Both user and AI message bubbles also rely on precise drop shadows (`shadow-[0_4px_12px_rgba(0,0,0,0.5)]`).
+- **Z-Index & Canvas Layering**: The `react-force-graph-2d` canvas naturally dominates the DOM. The Chat Toggle Orb must maintain a strictly defined `z-50` via fixed positioning (`bottom-6 right-6`), and the open Chat Window must also sit in a fixed `z-50` overlay to avoid rendering beneath the physics engine.
+- **Graph Control Synergy**: To avoid overlapping with the Chat Orb, the Graph controls (Zoom In/Out/Target) were strictly moved to `bottom-28 right-6` with `z-20`. **Do not change these coordinates**; they are the exact mathematical offset required to prevent collision.
+- **Scroll Container Architecture**: The Chat Message area uses `overflow-y-auto` paired with specific height constraints (`max-h-[60vh]` on mobile, `max-h-[500px]` on desktop) inside the Liquid Glass pane to prevent the entire page window from scrolling out of bounds behind the conversation. 
+- **Avoiding Absolute Layout Bleed**: Aside from the Chat UI and Graph Controls, the main layout strictly avoids `position: absolute`. It was confirmed that leveraging Tailwind's Flexbox and CSS Grid natively is the absolute requirement for the core dashboard to organically adapt without content bleeding heavily over the Sidebar or Mobile Header.
+
+## 7. Critical Active Blocker: Vercel AI SDK v6 vs TypeScript (Chat UI)
 **Current Status**: The `CrosAIChat.tsx` frontend UI is currently broken and failing the Next.js production build (`npm run build`). The chat UI is temporarily paused.
 
 **The Problem**:
