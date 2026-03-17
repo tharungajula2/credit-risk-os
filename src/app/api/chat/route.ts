@@ -1,7 +1,24 @@
 import { createAgentUIStreamResponse, ToolLoopAgent } from 'ai';
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import fs from 'fs';
 import path from 'path';
+
+// Force load the .env.local file directly in case the server hasn't been restarted
+let apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+try {
+  const envPath = path.join(process.cwd(), '.env.local');
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf-8');
+    const match = envContent.match(/GOOGLE_GENERATIVE_AI_API_KEY=(.+)/);
+    if (match && match[1]) apiKey = match[1].trim();
+  }
+} catch (e) {
+  console.log("Failed to load .env.local dynamically");
+}
+
+const googleExt = createGoogleGenerativeAI({
+  apiKey: apiKey || '',
+});
 
 export async function POST(req: Request) {
   try {
@@ -39,7 +56,7 @@ export async function POST(req: Request) {
     const systemPrompt = `You are Vian AI, the AI assistant for Tharun's Quant OS. You are a highly restricted, zero-hallucination RAG agent. I will provide you with Tharun's personal knowledge base. You must answer the user's questions strictly and exclusively using the information provided in the knowledge base below. If the user asks a question that is not covered in the knowledge base, you must politely reply: 'I am highly restricted to Tharun's Quant OS knowledge base. I cannot answer outside queries.' Do not make up information. Here is the knowledge base:\n\n${ragContext}`;
 
     const crosAgent = new ToolLoopAgent({
-      model: google('gemini-2.5-flash-lite'),
+      model: googleExt('gemini-2.5-flash-lite'),
       instructions: systemPrompt,
     });
 
