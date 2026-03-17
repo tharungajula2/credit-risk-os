@@ -452,9 +452,9 @@ If I build a supervised AML classifier, logistic regression is the easiest place
 
 It models:
 
-\[
+$$
 P(Y=1 \mid X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k)}}
-\]
+$$
 
 Interpretation:
 - the model converts a linear score into a probability
