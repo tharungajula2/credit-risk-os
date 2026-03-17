@@ -18,8 +18,10 @@ tags:
   - sklearn-pipeline
   - serialization
 
+cluster: "02 — Model Monitoring, Validation, and Stability"
 links:
   - "[[Tharun-Kumar-Gajula]]"
+
   - "[[1_full_pd_model]]"
 ---
 

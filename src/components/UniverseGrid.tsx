@@ -11,8 +11,12 @@ interface UniverseGridProps {
 
 /* ── Cluster palette ── */
 const PALETTE: Record<string, { badge: string; glowColor: string }> = {
-  "System Atlas": { badge: "text-blue-300 bg-blue-500/10 border-blue-400/25", glowColor: "rgba(59,130,246,0.07)" },
-  "Quantitative Portfolio": { badge: "text-rose-300 bg-rose-500/10 border-rose-400/25", glowColor: "rgba(244,63,113,0.07)" },
+  "00 — System Atlas": { badge: "text-blue-300 bg-blue-500/10 border-blue-400/25", glowColor: "rgba(59,130,246,0.07)" },
+  "01 — Credit Risk Modeling Foundations": { badge: "text-violet-300 bg-violet-500/10 border-violet-400/25", glowColor: "rgba(139,92,246,0.07)" },
+  "02 — Model Monitoring, Validation, and Stability": { badge: "text-teal-300 bg-teal-500/10 border-teal-400/25", glowColor: "rgba(20,184,166,0.07)" },
+  "03 — Loss, Exposure, and Recovery Modeling": { badge: "text-pink-300 bg-pink-500/10 border-pink-400/25", glowColor: "rgba(236,72,153,0.07)" },
+  "04 — Applied Machine Learning Projects": { badge: "text-amber-300 bg-amber-500/10 border-amber-400/25", glowColor: "rgba(245,158,11,0.07)" },
+  "05 — Sandbox Environment": { badge: "text-emerald-300 bg-emerald-500/10 border-emerald-400/25", glowColor: "rgba(16,185,129,0.07)" },
   "Others": { badge: "text-gray-300 bg-gray-500/10 border-gray-400/25", glowColor: "rgba(156,163,175,0.07)" },
 };
 const DEFAULT = { badge: "text-indigo-300 bg-indigo-500/10 border-indigo-400/25", glowColor: "rgba(99,102,241,0.07)" };

@@ -18,7 +18,7 @@ tags:
   - lending-club
   - model-validation
   - SR-11-7
-cluster: Phase 4 — Loss & Exposure Modeling
+cluster: "03 — Loss, Exposure, and Recovery Modeling"
 links:
   - "[[Tharun-Kumar-Gajula]]"
   - "[[1_full_pd_model]]"

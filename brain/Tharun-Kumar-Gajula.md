@@ -12,7 +12,7 @@ tags:
   - data-science
   - banking
   - machine-learning
-cluster: "System Atlas"
+cluster: "00 — System Atlas"
 links:
   - "[[1_full_pd_model]]"
   - "[[2_monitoring_model]]"
@@ -22,6 +22,9 @@ links:
   - "[[6_employee_retention_tree_models_masterclass]]"
   - "[[7_socio_economic_household_classification_masterclass]]"
   - "[[8_twitter_sentiment_nlp_masterclass]]"
+  - "[[sandbox_1]]"
+  - "[[sandbox_2]]"
+  - "[[sandbox_3]]"
 ---
 
 ---

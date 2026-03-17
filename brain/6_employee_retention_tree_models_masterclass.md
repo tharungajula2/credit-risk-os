@@ -18,7 +18,7 @@ tags:
   - ROC-AUC
   - precision
   - recall
-cluster: Phase 7 — Applied Machine Learning Projects
+cluster: "04 — Applied Machine Learning Projects"
 links:
   - "[[Tharun-Kumar-Gajula]]"
   - "[[1_full_pd_model]]"

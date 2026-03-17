@@ -20,7 +20,7 @@ tags:
   - credit-risk
   - lending-club
   - model-validation
-cluster: Phase 6 — Portfolio Loss Integration, Provisioning, and Stress Testing
+cluster: "03 — Loss, Exposure, and Recovery Modeling"
 links:
   - "[[Tharun-Kumar-Gajula]]"
   - "[[1_full_pd_model]]"

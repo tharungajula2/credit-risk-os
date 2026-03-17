@@ -21,8 +21,10 @@ tags:
   - lending-club
   - IRB
 
+cluster: "01 — Credit Risk Modeling Foundations"
 links:
   - "[[Tharun-Kumar-Gajula]]"
+
   - "[[2_monitoring_model]]"
 ---
 
