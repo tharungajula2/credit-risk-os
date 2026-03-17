@@ -17,12 +17,10 @@ tags:
   - data-science
   - supervised-learning
 cluster: "04 — Applied Machine Learning Projects"
+progress: 0
 links:
   - "[[Tharun-Kumar-Gajula]]"
-  - "[[1_full_pd_model]]"
-  - "[[2_monitoring_model]]"
-  - "[[3_lgd_ead_model_rewritten]]"
-  - "[[4_ecl_cecl_stress_testing_rewritten]]"
+  - "[[1_lending_club_credit_risk_masterclass]]"
   - "[[5_bank_churn_neural_networks_masterclass]]"
   - "[[6_employee_retention_tree_models_masterclass]]"
 ---

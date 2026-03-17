@@ -5,18 +5,16 @@ tags:
   - sandbox
   - experimentation
 cluster: "05 — Sandbox Environment"
+progress: 0
 links:
   - "[[Tharun-Kumar-Gajula]]"
-  - "[[1_full_pd_model]]"
-  - "[[2_monitoring_model]]"
-  - "[[3_lgd_ead_model_rewritten]]"
-  - "[[4_ecl_cecl_stress_testing_rewritten]]"
+  - "[[1_lending_club_credit_risk_masterclass]]"
   - "[[5_bank_churn_neural_networks_masterclass]]"
   - "[[6_employee_retention_tree_models_masterclass]]"
   - "[[7_socio_economic_household_classification_masterclass]]"
   - "[[8_twitter_sentiment_nlp_masterclass]]"
-  - "[[sandbox_1]]"
-  - "[[sandbox_2]]"
+  - "[[2_aml_financial_crime_masterclass]]"
+  - "[[3_sandbox]]"
 ---
 
 # Sandbox Environment — Node 3
@@ -28,13 +26,10 @@ links:
 ## Temporary Graph Anchors
 
 [[Tharun-Kumar-Gajula]]
-[[1_full_pd_model]]
-[[2_monitoring_model]]
-[[3_lgd_ead_model_rewritten]]
-[[4_ecl_cecl_stress_testing_rewritten]]
+[[1_lending_club_credit_risk_masterclass]]
 [[5_bank_churn_neural_networks_masterclass]]
 [[6_employee_retention_tree_models_masterclass]]
 [[7_socio_economic_household_classification_masterclass]]
 [[8_twitter_sentiment_nlp_masterclass]]
-[[sandbox_1]]
-[[sandbox_2]]
+[[2_aml_financial_crime_masterclass]]
+[[3_sandbox]]

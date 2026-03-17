@@ -21,12 +21,10 @@ tags:
   - data-science
   - banking
 cluster: "04 — Applied Machine Learning Projects"
+progress: 0
 links:
   - "[[Tharun-Kumar-Gajula]]"
-  - "[[1_full_pd_model]]"
-  - "[[2_monitoring_model]]"
-  - "[[3_lgd_ead_model_rewritten]]"
-  - "[[4_ecl_cecl_stress_testing_rewritten]]"
+  - "[[1_lending_club_credit_risk_masterclass]]"
 ---
 
 ---
@@ -1204,13 +1202,13 @@ Because the test set is reused during model development, outlier treatment is ap
 
 This note is not a credit-risk note, but it is a strong **applied machine-learning foundation note** for the rest of the brain.
 
-- [[1_full_pd_model]] — This note and the PD note both solve binary classification problems. The business event differs, but the workflow of preprocessing, training, evaluation, and threshold-based action is structurally similar.
+- [[1_lending_club_credit_risk_masterclass|1_full_pd_model]] — This note and the PD note both solve binary classification problems. The business event differs, but the workflow of preprocessing, training, evaluation, and threshold-based action is structurally similar.
 
-- [[2_monitoring_model]] — If this churn model were deployed, I would monitor feature drift, score drift, and recall decay over time using the same production mindset described in the monitoring note.
+- [[1_lending_club_credit_risk_masterclass|2_monitoring_model]] — If this churn model were deployed, I would monitor feature drift, score drift, and recall decay over time using the same production mindset described in the monitoring note.
 
-- [[3_lgd_ead_model_rewritten]] — That note explains severity and exposure after default. This churn note is different in objective, but it reinforces general machine-learning ideas like feature handling, target design, and evaluation tradeoffs.
+- [[1_lending_club_credit_risk_masterclass|3_lgd_ead_model_rewritten]] — That note explains severity and exposure after default. This churn note is different in objective, but it reinforces general machine-learning ideas like feature handling, target design, and evaluation tradeoffs.
 
-- [[4_ecl_cecl_stress_testing_rewritten]] — The ECL note is about converting risk components into money. This note is about converting probability estimates into retention action. Both are examples of how modeling supports business decisions.
+- [[1_lending_club_credit_risk_masterclass|4_ecl_cecl_stress_testing_rewritten]] — The ECL note is about converting risk components into money. This note is about converting probability estimates into retention action. Both are examples of how modeling supports business decisions.
 
 ---
 

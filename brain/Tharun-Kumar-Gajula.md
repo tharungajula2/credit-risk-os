@@ -13,18 +13,16 @@ tags:
   - banking
   - machine-learning
 cluster: "00 — System Atlas"
+progress: 0
 links:
-  - "[[1_full_pd_model]]"
-  - "[[2_monitoring_model]]"
-  - "[[3_lgd_ead_model_rewritten]]"
-  - "[[4_ecl_cecl_stress_testing_rewritten]]"
+  - "[[1_lending_club_credit_risk_masterclass]]"
   - "[[5_bank_churn_neural_networks_masterclass]]"
   - "[[6_employee_retention_tree_models_masterclass]]"
   - "[[7_socio_economic_household_classification_masterclass]]"
   - "[[8_twitter_sentiment_nlp_masterclass]]"
-  - "[[sandbox_1]]"
-  - "[[sandbox_2]]"
-  - "[[sandbox_3]]"
+  - "[[2_aml_financial_crime_masterclass]]"
+  - "[[3_sandbox]]"
+  - "[[4_sandbox]]"
 ---
 
 ---
@@ -108,10 +106,10 @@ The eight core notes form two broad clusters.
 
 These notes are the core of my professional direction in risk analytics and model validation:
 
-- [[1_full_pd_model]]
-- [[2_monitoring_model]]
-- [[3_lgd_ead_model_rewritten]]
-- [[4_ecl_cecl_stress_testing_rewritten]]
+- [[1_lending_club_credit_risk_masterclass|1_full_pd_model]]
+- [[1_lending_club_credit_risk_masterclass|2_monitoring_model]]
+- [[1_lending_club_credit_risk_masterclass|3_lgd_ead_model_rewritten]]
+- [[1_lending_club_credit_risk_masterclass|4_ecl_cecl_stress_testing_rewritten]]
 
 ### Cluster 2 — Applied Machine Learning Foundations Through Projects
 
@@ -157,7 +155,7 @@ The logic of this structure is simple:
 
 ## How the Credit-Risk Core Fits Together
 
-### [[1_full_pd_model]] — The Core Modeling Engine
+### [[1_lending_club_credit_risk_masterclass|1_full_pd_model]] — The Core Modeling Engine
 
 This is the technical anchor of the whole system.
 
@@ -185,7 +183,7 @@ This note is where I connect statistics, business logic, and model building most
 
 ---
 
-### [[2_monitoring_model]] — The Governance and Production Layer
+### [[1_lending_club_credit_risk_masterclass|2_monitoring_model]] — The Governance and Production Layer
 
 A model is not finished when it is trained.
 
@@ -213,7 +211,7 @@ It also maps very naturally to the kind of thinking needed in real institutions:
 
 ---
 
-### [[3_lgd_ead_model_rewritten]] — Loss Severity and Exposure Thinking
+### [[1_lending_club_credit_risk_masterclass|3_lgd_ead_model_rewritten]] — Loss Severity and Exposure Thinking
 
 Once PD is understood, the next question is not only *whether* default happens, but *how much money is lost if it happens*.
 
@@ -234,7 +232,7 @@ That is a very important conceptual shift in credit risk.
 
 ---
 
-### [[4_ecl_cecl_stress_testing_rewritten]] — Portfolio Loss, Provisioning, and Stress Thinking
+### [[1_lending_club_credit_risk_masterclass|4_ecl_cecl_stress_testing_rewritten]] — Portfolio Loss, Provisioning, and Stress Thinking
 
 This note brings the three risk parameters together:
 
@@ -563,10 +561,10 @@ It helps me organize my direction clearly: credit risk, quantitative analytics, 
 
 When I want the most coherent path through the system, the cleanest sequence is:
 
-1. [[1_full_pd_model]]
-2. [[2_monitoring_model]]
-3. [[3_lgd_ead_model_rewritten]]
-4. [[4_ecl_cecl_stress_testing_rewritten]]
+1. [[1_lending_club_credit_risk_masterclass|1_full_pd_model]]
+2. [[1_lending_club_credit_risk_masterclass|2_monitoring_model]]
+3. [[1_lending_club_credit_risk_masterclass|3_lgd_ead_model_rewritten]]
+4. [[1_lending_club_credit_risk_masterclass|4_ecl_cecl_stress_testing_rewritten]]
 5. [[6_employee_retention_tree_models_masterclass]]
 6. [[5_bank_churn_neural_networks_masterclass]]
 7. [[7_socio_economic_household_classification_masterclass]]
