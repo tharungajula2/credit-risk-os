@@ -11,13 +11,8 @@ interface UniverseGridProps {
 
 /* ── Cluster palette ── */
 const PALETTE: Record<string, { badge: string; glowColor: string }> = {
-  "Phase 1. Bank Loss Engine": { badge: "text-blue-300 bg-blue-500/10 border-blue-400/25", glowColor: "rgba(59,130,246,0.07)" },
-  "Phase 2. Regulatory Skeleton": { badge: "text-violet-300 bg-violet-500/10 border-violet-400/25", glowColor: "rgba(139,92,246,0.07)" },
-  "Phase 3. Core Credit Risk Trinity": { badge: "text-teal-300 bg-teal-500/10 border-teal-400/25", glowColor: "rgba(20,184,166,0.07)" },
-  "Phase 4. Model Build & Validate": { badge: "text-pink-300 bg-pink-500/10 border-pink-400/25", glowColor: "rgba(236,72,153,0.07)" },
-  "Phase 5. Hard Portfolios & Stress": { badge: "text-amber-300 bg-amber-500/10 border-amber-400/25", glowColor: "rgba(245,158,11,0.07)" },
-  "Phase 6. Broader Risk Domains": { badge: "text-emerald-300 bg-emerald-500/10 border-emerald-400/25", glowColor: "rgba(16,185,129,0.07)" },
-  "Phase 7. Sandbox": { badge: "text-gray-300 bg-gray-500/10 border-gray-400/25", glowColor: "rgba(163,163,163,0.07)" },
+  "System Atlas": { badge: "text-blue-300 bg-blue-500/10 border-blue-400/25", glowColor: "rgba(59,130,246,0.07)" },
+  "Quantitative Portfolio": { badge: "text-rose-300 bg-rose-500/10 border-rose-400/25", glowColor: "rgba(244,63,113,0.07)" },
   "Others": { badge: "text-gray-300 bg-gray-500/10 border-gray-400/25", glowColor: "rgba(156,163,175,0.07)" },
 };
 const DEFAULT = { badge: "text-indigo-300 bg-indigo-500/10 border-indigo-400/25", glowColor: "rgba(99,102,241,0.07)" };
@@ -86,15 +81,11 @@ export default function UniverseGrid({ notes }: UniverseGridProps) {
     >
       {sortedNotes.map((note) => {
         const { badge, glowColor } = palette(note.frontmatter.cluster);
-        const isLocked = note.frontmatter.cluster === "Phase 5. Hard Portfolios & Stress" || note.frontmatter.cluster === "Phase 6. Broader Risk Domains";
 
         return (
           <motion.li key={note.slug} variants={card} style={{ minWidth: 0 }}>
             <Link 
-              href={isLocked ? "#" : `/notes/${note.slug}`} 
-              onClick={(e) => {
-                if (isLocked) e.preventDefault();
-              }}
+              href={`/notes/${note.slug}`} 
               style={{ textDecoration: "none", display: "block", height: "100%" }}
             >
 
@@ -117,18 +108,16 @@ export default function UniverseGrid({ notes }: UniverseGridProps) {
                   border: "1px solid rgba(255,255,255,0.08)",
                   boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07)",
                   transition: "background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
-                  cursor: isLocked ? "not-allowed" : "pointer",
-                  opacity: isLocked ? 0.6 : 1,
+                  cursor: "pointer",
+                  opacity: 1,
                 }}
                 onMouseEnter={(e) => {
-                  if (isLocked) return;
                   const el = e.currentTarget;
                   el.style.background = "rgba(255,255,255,0.055)";
                   el.style.borderColor = "rgba(255,255,255,0.14)";
                   el.style.boxShadow = "0 12px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12), 0 0 40px rgba(255,255,255,0.04)";
                 }}
                 onMouseLeave={(e) => {
-                  if (isLocked) return;
                   const el = e.currentTarget;
                   el.style.background = "rgba(255,255,255,0.03)";
                   el.style.borderColor = "rgba(255,255,255,0.08)";
@@ -173,11 +162,7 @@ export default function UniverseGrid({ notes }: UniverseGridProps) {
                     </span>
                   ) : <span />}
 
-                  {isLocked ? (
-                    <Lock size={16} strokeWidth={2.5} style={{ color: "rgba(239, 68, 68, 0.6)" }} />
-                  ) : (
-                    <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "1.1rem", lineHeight: 1, transition: "color 0.25s" }} aria-hidden>↗</span>
-                  )}
+                  <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "1.1rem", lineHeight: 1, transition: "color 0.25s" }} aria-hidden>↗</span>
                 </div>
 
                 {/* ── Title ── */}

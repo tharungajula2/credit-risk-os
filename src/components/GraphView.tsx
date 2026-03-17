@@ -31,13 +31,8 @@ const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
 // ── Premium cluster color palette ──
 const CLUSTER_COLORS: Record<string, string> = {
   "System Atlas": "#ffffff",
-  "Phase 1: The Macro Picture": "#60a5fa",
-  "Phase 2: Data Architecture": "#a78bfa",
-  "Phase 3: The Algorithmic Engine": "#2dd4bf",
-  "Phase 4: Model Validation": "#f472b6",
-  "Phase 5: Production Monitoring": "#fbbf24",
-  "Phase 6: Deployment Lifecycle": "#34d399",
   "Quantitative Portfolio": "#f87171",
+  "Isolated Nodes": "#9ca3af",
   Others: "#9ca3af",
 };
 
@@ -83,10 +78,7 @@ export default function GraphView({ graphData }: GraphViewProps) {
   const handleNodeClick = useCallback(
     (node: any) => {
       if (node?.id) {
-        const isLocked = node.group === "Phase 5: Production Monitoring" || node.group === "Phase 6: Deployment Lifecycle";
-        if (!isLocked) {
-          router.push(`/notes/${node.id}`);
-        }
+        router.push(`/notes/${node.id}`);
       }
     },
     [router]
@@ -188,10 +180,7 @@ export default function GraphView({ graphData }: GraphViewProps) {
             ctx.shadowBlur = 4;
           }
           
-          const isLocked = n.group === "Phase 5: Production Monitoring" || n.group === "Phase 6: Deployment Lifecycle";
-          const displayName = isLocked ? `🔒 ${n.name}` : n.name;
-          
-          ctx.fillText(displayName, x, y + radius + 3);
+          ctx.fillText(n.name, x, y + radius + 3);
           ctx.shadowBlur = 0;
         }}
         nodePointerAreaPaint={(node, color, ctx) => {

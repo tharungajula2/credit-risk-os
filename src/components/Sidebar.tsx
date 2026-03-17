@@ -253,19 +253,12 @@ export default function Sidebar({ notes }: SidebarProps) {
               {items.map((note) => {
                 const href = `/notes/${note.slug}`;
                 const isActive = pathname === href;
-                const isLocked = cluster === "Phase 5: Production Monitoring" || cluster === "Phase 6: Deployment Lifecycle";
 
                 return (
                   <Link
                     key={note.slug}
-                    href={isLocked ? "#" : href}
-                    onClick={(e) => {
-                      if (isLocked) {
-                        e.preventDefault();
-                      } else {
-                        setIsOpen(false);
-                      }
-                    }}
+                    href={href}
+                    onClick={() => setIsOpen(false)}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -277,8 +270,6 @@ export default function Sidebar({ notes }: SidebarProps) {
                       textDecoration: "none",
                       color: isActive
                         ? "rgba(255,255,255,0.95)"
-                        : isLocked
-                        ? "rgba(255,255,255,0.15)"
                         : "rgba(255,255,255,0.38)",
                       background: isActive
                         ? "rgba(96,165,250,0.1)"
@@ -288,10 +279,10 @@ export default function Sidebar({ notes }: SidebarProps) {
                         : "2px solid transparent",
                       transition: "all 0.15s ease",
                       lineHeight: 1.35,
-                      cursor: isLocked ? "not-allowed" : "pointer",
+                      cursor: "pointer",
                     }}
                     onMouseEnter={(e) => {
-                      if (!isActive && !isLocked) {
+                      if (!isActive) {
                         e.currentTarget.style.background =
                           "rgba(255,255,255,0.03)";
                         e.currentTarget.style.color =
@@ -299,31 +290,20 @@ export default function Sidebar({ notes }: SidebarProps) {
                       }
                     }}
                     onMouseLeave={(e) => {
-                      if (!isActive && !isLocked) {
+                      if (!isActive) {
                         e.currentTarget.style.background = "transparent";
                         e.currentTarget.style.color =
                           "rgba(255,255,255,0.38)";
                       }
                     }}
                   >
-                    {isLocked ? (
-                      <Lock
-                        size={12}
-                        style={{
-                          flexShrink: 0,
-                          opacity: 0.3,
-                          color: "#ef4444",
-                        }}
-                      />
-                    ) : (
-                      <FileText
-                        size={12}
-                        style={{
-                          flexShrink: 0,
-                          opacity: isActive ? 0.7 : 0.25,
-                        }}
-                      />
-                    )}
+                    <FileText
+                      size={12}
+                      style={{
+                        flexShrink: 0,
+                        opacity: isActive ? 0.7 : 0.25,
+                      }}
+                    />
                     <span
                       style={{
                         overflow: "hidden",
