@@ -31,11 +31,9 @@ const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
 // ── Premium cluster color palette ──
 const CLUSTER_COLORS: Record<string, string> = {
   "00 — System Atlas": "#60a5fa", // blue-400
-  "01 — End-to-End Credit Risk Modeling": "#10b981", // emerald-500
-  "02 — Model Monitoring, Validation, and Stability": "#14b8a6", // teal-500
-  "03 — Loss, Exposure, and Recovery Modeling": "#ec4899", // pink-500
-  "04 — Applied Machine Learning Projects": "#f59e0b", // amber-500
-  "05 — Sandbox Environment": "#9ca3af", // gray-400
+  "01 — Foundations": "#8b5cf6", // violet-500
+  "02 — End-to-End Credit Risk Modeling": "#10b981", // emerald-500
+  "03 — Applied Machine Learning Projects": "#f59e0b", // amber-500
   "Isolated Nodes": "#9ca3af",
   Others: "#9ca3af",
 };

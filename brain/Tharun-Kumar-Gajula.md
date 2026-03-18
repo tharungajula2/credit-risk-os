@@ -20,9 +20,8 @@ links:
   - "[[6_employee_retention_tree_models_masterclass]]"
   - "[[7_socio_economic_household_classification_masterclass]]"
   - "[[8_twitter_sentiment_nlp_masterclass]]"
-  - "[[2_aml_financial_crime_masterclass]]"
-  - "[[3_sandbox]]"
-  - "[[4_sandbox]]"
+  - "[[2_regression_analysis_masterclass]]"
+  - "[[3_machine_learning_masterclass]]"
 ---
 
 ---

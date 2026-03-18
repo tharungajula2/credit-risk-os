@@ -16,7 +16,7 @@ tags:
   - model-evaluation
   - data-science
   - supervised-learning
-cluster: "04 — Applied Machine Learning Projects"
+cluster: "03 — Applied Machine Learning Projects"
 progress: 0
 links:
   - "[[Tharun-Kumar-Gajula]]"

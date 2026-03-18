@@ -21,10 +21,11 @@ tags:
   - banking
   - data-science
   - beginner-friendly
-cluster: "01 — End-to-End Credit Risk Modeling"
-progress: 0
+cluster: "02 — End-to-End Credit Risk Modeling"
 links:
   - "[[Tharun-Kumar-Gajula]]"
+  - "[[2_regression_analysis_masterclass]]"
+  - "[[3_machine_learning_masterclass]]"
   - "[[5_bank_churn_neural_networks_masterclass]]"
   - "[[6_employee_retention_tree_models_masterclass]]"
   - "[[7_socio_economic_household_classification_masterclass]]"
@@ -372,34 +373,228 @@ That immediately teaches a production lesson:
 
 Credit data is full of missing values, and the most important thing is **not** to treat them as an annoying cleanup step. Missingness often contains risk information.
 
-### Some examples from this project
+### 2.3.1 The three missingness mechanisms I should know
+
+The standard terms are:
+
+- **MCAR — Missing Completely At Random**  
+  Missingness has no systematic relationship to either the observed data or the unobserved value itself.
+
+- **MAR — Missing At Random**  
+  Missingness depends on other observed variables, even if it does not depend directly on the missing value after conditioning on those observed variables.
+
+- **MNAR — Missing Not At Random**  
+  Missingness is related to the missing value itself or to the underlying risk process.
+
+### A simple intuition
+
+- **MCAR** is the least dangerous statistically, because the missing rows are basically a random sample.
+- **MAR** can often be handled reasonably well with model-based or segment-based imputation, because other observed fields help explain the gap.
+- **MNAR** is the most important case in credit risk, because the fact that something is missing may itself be a risk signal.
+
+### 2.3.2 How this applies to this project
+
+Some examples from the Lending Club workflow:
 
 - `total_rev_hi_lim` is often filled using `funded_amnt`
 - some bureau-related fields are filled with `0`
 - fields like `mths_since_last_delinq` can be missing because the borrower never had a delinquency
 
-### Beginner-friendly intuition
-Missing values can mean different things:
+These are **not all the same kind of missingness**.
 
-- data was genuinely unavailable
-- the borrower never had that event
-- the data pipeline did not deliver it
-- the borrower did not disclose it
+#### Example 1 — “Never had the event”
+If `mths_since_last_delinq` is missing because the borrower never had a delinquency, then missingness is actually informative. In practice, that is often better treated as:
 
-That means the business meaning of missingness matters.
+- a special bin
+- a flag plus imputed value
+- or a “missing / no-event” category in a scorecard
 
-### What I actually did
-The notebooks use a set of practical fills that keep the workflow moving.
+#### Example 2 — proxy-based fill
+If `total_rev_hi_lim` is unavailable but `funded_amnt` is available, using a business proxy may be acceptable for a practical project, but I should still document the assumption clearly.
 
-### What I should understand for interviews
-The best answer is:
+#### Example 3 — operational data failure
+If a field is missing because of a pipeline issue, that is a data-quality problem, not a borrower-risk statement. That should be investigated operationally, not hidden blindly with imputation.
 
-> Missing values should be handled based on business meaning, not only convenience. In some cases zero is reasonable, in some cases a proxy is reasonable, and in some cases “missing” should become its own risk bucket.
+### 2.3.3 Best-practice missing-value workflow
 
-That is the right mindset.
+A clean workflow is:
+
+1. **ask why the value is missing**
+2. **separate structural missingness from accidental missingness**
+3. **check whether missingness itself predicts bad rate**
+4. **choose treatment based on business meaning**
+5. **freeze the treatment for deployment and monitoring**
+
+That fourth step is where beginners often jump too fast.
+
+### 2.3.4 Practical treatment options
+
+#### Option A — Zero fill
+Use only when zero has a defensible meaning.
+
+Good examples:
+
+- count of prior events when “missing” really means “none observed”
+- utilization-like quantities where the product definition supports zero
+
+Bad example:
+
+- filling income with zero when the borrower clearly does not have zero income
+
+#### Option B — Mean / median / segment imputation
+Useful when I need a simple numeric fill and the variable behaves more like a continuous measurement field.
+
+Better than a global mean is often:
+
+- median by segment
+- median by grade / product / vintage
+- or imputation inside train only, then applied unchanged to test and monitoring data
+
+#### Option C — Proxy imputation
+Use a business-related proxy, as in `total_rev_hi_lim ← funded_amnt`, when there is a strong practical relationship.
+
+But this should always be documented because a proxy changes the economic meaning of the feature.
+
+#### Option D — Missing indicator + imputation
+A very strong practical pattern is:
+
+- create a binary flag: `is_missing_feature`
+- then impute the numeric value
+
+This lets the model learn both:
+
+- the filled numeric level
+- and the fact that the original value was missing
+
+#### Option E — Missing as its own scorecard bucket
+For WoE / scorecard models, this is often one of the best approaches.
+
+Why?
+
+Because scorecards already work through bins.  
+So instead of pretending the missing values are ordinary numeric values, I can make them a dedicated risk bucket and inspect whether that bucket is safer or riskier than the rest.
+
+### 2.3.5 What I should do differently by model family
+
+#### For scorecards / logistic regression
+I generally prefer:
+
+- business-rule fills
+- missing indicators
+- or separate missing buckets
+
+That keeps the treatment interpretable.
+
+#### For tree-based models
+Trees can sometimes handle imputed values more flexibly, but I still should not ignore missingness meaning. The model may split on the indicator or on the filled value, but the data design still matters.
+
+### 2.3.6 What I actually did vs what is best practice
+
+#### What I actually did
+The notebooks use practical fills that keep the workflow moving and make the feature engineering possible.
+
+#### Best-practice interpretation
+For interview purposes, the strongest answer is:
+
+> Missing values are not a single problem. I first classify them as MCAR, MAR, or MNAR in spirit, then I ask whether the missingness itself carries risk information. In scorecards, I often prefer a missing flag or a separate bucket over blindly using a mean fill.
+
+That is the mindset I want to keep.
+
+### 2.3.7 Outliers and extreme values
+
+Outliers are another place where beginners often overreact.  
+The goal is **not** to delete every large number. The goal is to distinguish:
+
+- genuine but rare borrower behaviour
+- from clear data errors
+
+### What counts as an outlier here?
+
+Potential outlier-type variables in retail lending include:
+
+- `annual_inc`
+- `dti`
+- revolving utilization
+- inquiry counts
+- delinquency counts
+- months-since variables with impossible negatives or extreme ages due to date parsing issues
+
+### Best-practice order of thinking
+
+#### Step 1 — check for impossible values
+These are not “interesting outliers.” They are errors.
+
+Examples:
+
+- negative income where it should not exist
+- negative months-since values caused by date conversion problems
+- utilization far outside any plausible range because of denominator issues
+
+These should be corrected, capped after investigation, or excluded depending on the root cause.
+
+#### Step 2 — separate skewness from error
+A very high income may be rare but real.  
+That is not the same as a broken value.
+
+So I should ask:
+
+- is this economically plausible?
+- how many such observations exist?
+- do they distort the model disproportionately?
+
+#### Step 3 — choose a treatment that matches the model
+
+### Common outlier treatments
+
+#### A. Winsorization / capping
+This is one of the most practical methods in credit-risk preprocessing.
+
+Example:
+
+- cap income at the 99th percentile
+- cap `dti` at a reasonable upper bound
+- cap months-since variables at a sensible extreme
+
+Why it helps:
+
+- protects the model from a few very large values
+- keeps all observations in the sample
+- is easy to document
+
+#### B. Binning
+For scorecards, binning is often even better than raw-value capping.
+
+Why?
+
+Because once I convert a variable into grouped bins or WoE buckets, very large raw values stop dominating the regression numerically. They are absorbed into a top bucket such as:
+
+- `annual_inc: >140K`
+- `inq_last_6mths: >6`
+
+This is one reason scorecards are naturally robust to some outlier problems.
+
+#### C. Log transformation
+For highly right-skewed variables like income, a log transform can stabilize scale.
+
+This is more common in continuous-modeling workflows than in classic WoE scorecards, but it is still a useful concept to know.
+
+#### D. Robust scaling
+This is more relevant in some ML pipelines than in classic scorecards. It uses median and IQR-based scaling instead of mean and standard deviation, so it is less distorted by extremes.
+
+#### E. Deletion
+This should be the last resort, not the first instinct.
+
+Deletion is most defensible when the observation is clearly corrupted or impossible. It is much weaker when the value is just rare but real.
+
+### What is the best answer for *this* project?
+
+For this Lending Club scorecard workflow, the strongest answer is:
+
+> For impossible values, I would correct or exclude after investigation. For genuine but extreme values, I prefer capping and, even more importantly, scorecard-style binning and WoE grouping, because that makes the model much less sensitive to a handful of extreme observations.
+
+That fits this project very well.
 
 ---
-
 ## 2.4 Dummy variables
 
 A model cannot directly estimate coefficients for categories like:
@@ -845,50 +1040,278 @@ That produces a more realistic performance estimate.
 
 ## 5.2 Confusion matrix
 
-A confusion matrix tells me how many predictions fall into each bucket:
+A confusion matrix tells me how many predictions fall into each bucket **after I choose a cut-off**.
 
-- actual Good, predicted Good
-- actual Good, predicted Bad
-- actual Bad, predicted Good
-- actual Bad, predicted Bad
+Because this project is coded as:
 
-This depends on a chosen cut-off.
+- `1 = Good`
+- `0 = Bad`
 
-### Why it matters
-A scorecard is not only about rank ordering.  
-Eventually a business decision is made:
+the clean confusion matrix is:
 
-- approve
-- reject
-- refer
-- price differently
+|  | **Actual Good (1)** | **Actual Bad (0)** |
+|---|---|---|
+| **Predicted Good (1)** | True Good | False Good |
+| **Predicted Bad (0)** | False Bad | True Bad |
 
-That requires a cut-off.
+If I switch into the more standard “positive class = bad” language for validation, then the same four cells are usually written as:
+
+|  | **Actual Bad** | **Actual Good** |
+|---|---|---|
+| **Predicted Bad** | True Positive (TP) | False Positive (FP) |
+| **Predicted Good** | False Negative (FN) | True Negative (TN) |
+
+I care about this second layout more for interviews, because most people discuss default detection with **Bad as the positive class**.
+
+### 5.2.1 What each cell means in plain English
+
+- **TP**: I flagged the borrower as risky, and the borrower really did go bad
+- **FP**: I flagged the borrower as risky, but the borrower would actually have been fine
+- **FN**: I passed the borrower as acceptable, but the borrower later went bad
+- **TN**: I passed the borrower, and the borrower really stayed good
+
+### 5.2.2 Which error is more dangerous here?
+
+In most credit underwriting settings:
+
+- **False Negative** is the more dangerous error  
+  because I approved risk that later defaulted
+
+- **False Positive** is still costly  
+  because I declined or penalized a borrower who might have performed well
+
+So the costs are **asymmetric**.
+
+That is why a confusion matrix is not just a counting table. It is a business-cost table.
+
+### 5.2.3 Why the cut-off matters so much
+
+Suppose the model outputs a PD for every borrower.
+
+If I set a very **low cut-off** for calling someone “Bad,” then:
+
+- I catch more defaulters
+- but I also reject more good borrowers
+
+If I set a very **high cut-off**, then:
+
+- I approve more good borrowers
+- but I also miss more future defaulters
+
+So the confusion matrix changes with the threshold.  
+It is not a permanent property of the model.  
+It is a property of the **model + threshold together**.
+
+### 5.2.4 The core threshold metrics
+
+Using Bad as the positive class:
+
+```text
+Recall (Sensitivity / TPR) = TP / (TP + FN)
+```
+
+This answers:
+
+> Of all the borrowers who actually went bad, how many did I catch?
+
+```text
+Precision = TP / (TP + FP)
+```
+
+This answers:
+
+> Of all the borrowers I flagged as bad, how many really were bad?
+
+```text
+Specificity (TNR) = TN / (TN + FP)
+```
+
+This answers:
+
+> Of all the borrowers who were actually good, how many did I correctly leave alone?
+
+```text
+False Positive Rate = FP / (FP + TN) = 1 - Specificity
+```
+
+This answers:
+
+> How often did I wrongly reject a good borrower?
+
+```text
+False Negative Rate = FN / (FN + TP) = 1 - Recall
+```
+
+This answers:
+
+> How often did I miss an actual defaulter?
+
+### 5.2.5 What should I focus on in this project?
+
+For underwriting-style default modeling, **Recall on the Bad class** is often extremely important because missing bad borrowers is expensive.
+
+But precision also matters, because if I chase recall blindly, I may reject far too many good borrowers.
+
+So the right answer is not:
+
+- “only recall matters”
+
+The better answer is:
+
+> I usually care strongly about recall on bad borrowers because missed defaults are expensive, but I still need enough precision and specificity so the business does not over-reject good applicants.
+
+That is a much stronger interview answer.
 
 ---
 
-## 5.3 ROC and AUROC
+## 5.3 Precision, recall, F1, and threshold trade-offs
+
+This is the part that often feels abstract until I connect it to the project.
+
+### 5.3.1 Recall
+
+```text
+Recall = TP / (TP + FN)
+```
+
+High recall means:
+
+- I catch a large share of future bads
+- I am less likely to miss risky borrowers
+
+In this project, recall is closely tied to the risk appetite question:
+
+> How aggressively do I want to catch bad borrowers?
+
+### 5.3.2 Precision
+
+```text
+Precision = TP / (TP + FP)
+```
+
+High precision means:
+
+- when I call someone risky, I am usually right
+- my bad flags are not mostly noise
+
+This matters because a model that flags too many good borrowers as bad may become unusable commercially.
+
+### 5.3.3 F1 score
+
+```text
+F1 = 2 × (Precision × Recall) / (Precision + Recall)
+```
+
+F1 is the harmonic mean of precision and recall.
+
+### Why harmonic mean, not average?
+Because F1 punishes imbalance.
+
+If one of precision or recall is very low, F1 also becomes low.
+
+### When F1 is useful
+F1 is useful when I want one threshold-based metric that forces me to care about both:
+
+- catching bads
+- and not flagging too many goods
+
+### Limitation of F1 in banking
+F1 still assumes a kind of symmetric compromise between precision and recall.  
+But real credit decisions often have **business-specific costs**, not a generic 50/50 trade-off.
+
+So F1 is useful, but it is not the final business truth.
+
+### 5.3.4 Accuracy
+
+```text
+Accuracy = (TP + TN) / Total
+```
+
+Accuracy can be very misleading in imbalanced datasets.
+
+If 85% of borrowers are good, then a naive model that predicts everyone as good can already achieve around 85% accuracy while being useless for risk detection.
+
+So in this project, accuracy is **not** the metric I should lead with.
+
+### 5.3.5 A simple way to remember the threshold metrics
+
+- **Recall** = “Did I catch the bads?”
+- **Precision** = “Are my bad flags believable?”
+- **Specificity** = “Did I leave good borrowers alone?”
+- **F1** = “Am I balancing precision and recall reasonably?”
+- **Accuracy** = “How many total decisions were correct?”  
+  Useful, but often misleading by itself.
+
+---
+
+## 5.4 ROC and AUROC
 
 The ROC curve plots:
 
-- **True Positive Rate**
+- **True Positive Rate (Recall)**
 against
 - **False Positive Rate**
 
-across all thresholds.
+across all possible thresholds.
 
-The **AUROC** summarizes this into one number.
+### 5.4.1 Why ROC exists
 
-### Beginner intuition
+A confusion matrix depends on one chosen threshold.  
+But before choosing that threshold, I want to know whether the model has good **rank-ordering power** in general.
+
+That is what ROC/AUROC gives me.
+
+### 5.4.2 A clean intuition
+
+Imagine I rank borrowers from safest to riskiest using model score or PD.
+
+A good model should place most future bads closer to the risky end and most goods closer to the safe end.
+
 AUROC answers:
 
-> If I pick one Good and one Bad at random, how often does the model rank the Good higher than the Bad?
+> Across all threshold choices, how well does the model separate the two classes?
 
-A higher AUROC means better rank ordering.
+### 5.4.3 The probabilistic interpretation
+
+AUROC is the probability that if I randomly choose:
+
+- one actual good borrower
+- one actual bad borrower
+
+the model ranks them in the correct order.
+
+Because this project’s raw notebook probability is in the Good direction, I have to be careful with wording. The safest interpretation is:
+
+> AUROC measures whether the model assigns a more favorable score to goods than bads, or equivalently a lower PD to goods than bads.
+
+### 5.4.4 How to interpret AUROC values
+
+- **0.50** → no discrimination; random ordering
+- **0.60–0.70** → weak
+- **0.70–0.80** → reasonable / acceptable
+- **0.80–0.90** → strong
+- **>0.90** → unusually high; I should check for leakage or target contamination
+
+### 5.4.5 Why AUROC is so useful
+
+AUROC is threshold-free.
+
+That means it tells me about the model’s general ranking ability before I decide where to cut for approve / reject / refer decisions.
+
+### 5.4.6 What AUROC does *not* tell me
+
+AUROC does **not** tell me:
+
+- the best business cut-off
+- the expected money loss
+- whether the calibration is perfect
+- whether the model is stable over time
+
+It is a discrimination metric, not the whole evaluation story.
 
 ---
 
-## 5.4 Gini
+## 5.5 Gini
 
 Gini is closely related to AUROC:
 
@@ -896,34 +1319,116 @@ Gini is closely related to AUROC:
 Gini = 2 × AUROC - 1
 ```
 
-So if I know one, I know the other.
+So if:
 
-### Why banks talk about Gini
-In credit-risk practice, Gini is a very common summary metric for scorecard discrimination.
+- AUROC = 0.50, then Gini = 0
+- AUROC = 0.75, then Gini = 0.50
+- AUROC = 0.80, then Gini = 0.60
+
+### 5.5.1 Why Gini is used so much in credit risk
+
+Credit-risk scorecard discussions often use Gini because it is just a rescaled version of AUROC that puts random performance at **0** instead of **0.5**.
+
+That makes it feel more “incremental”:
+
+- **0** means no useful discrimination
+- higher positive values mean more separation power
+
+### 5.5.2 The easy way to remember it
+
+- **AUROC** is the probability-style discrimination measure
+- **Gini** is just the same information on a different scale
+
+So I should never treat them as two unrelated metrics.
 
 ---
 
-## 5.5 KS statistic
+## 5.6 KS statistic
 
 The **KS statistic** is especially important in retail credit.
 
-It measures the maximum separation between cumulative Good and Bad distributions across the score range.
+It measures the maximum separation between the cumulative distributions of Goods and Bads across the score range.
 
-### Beginner intuition
-Imagine sorting loans from riskiest to safest.  
-As I move along that sorted list, I track:
+### 5.6.1 Intuition without math first
 
-- cumulative share of Goods
-- cumulative share of Bads
+Imagine I sort all borrowers by risk score from riskiest to safest.
 
-The KS is the biggest vertical gap between those two cumulative curves.
+Now I walk down that sorted list and keep track of two cumulative curves:
 
-### Why bankers like KS
-Because it directly reflects how well the model creates a useful separation point between safe and risky borrowers.
+- cumulative share of all Bads seen so far
+- cumulative share of all Goods seen so far
+
+At each score point, I ask:
+
+> How far apart are these two cumulative curves?
+
+The **largest gap** is the KS statistic.
+
+### 5.6.2 Why KS is useful in scorecards
+
+KS is very intuitive for lending because it directly tells me:
+
+> At the best separation point, how far apart are the bad and good populations?
+
+That makes it very natural for score-band and cut-off discussions.
+
+### 5.6.3 Practical interpretation
+
+- higher KS means stronger separation
+- a low KS means goods and bads are too mixed together
+- the score band around the KS peak is often a very informative operating region for underwriting discussion
+
+### 5.6.4 How KS differs from AUROC
+
+- **AUROC** summarizes separation across **all thresholds**
+- **KS** focuses on the **single best separation point**
+
+So AUROC is more global, while KS is more “maximum gap at the best point.”
 
 ---
 
-## 5.6 Metrics are not everything
+## 5.7 How these metrics fit together in one picture
+
+This is the cleanest way I know to connect them:
+
+### Threshold-dependent metrics
+These depend on the cut-off I choose:
+
+- confusion matrix
+- precision
+- recall
+- specificity
+- F1
+- accuracy
+
+These answer:
+
+> “How does the model behave if I actually make a yes/no decision at this threshold?”
+
+### Threshold-independent or mostly rank-based metrics
+These look at broader discrimination:
+
+- ROC / AUROC
+- Gini
+- KS
+
+These answer:
+
+> “Before locking a threshold, how well does the model separate good and bad borrowers overall?”
+
+### Why I need both families
+If I only look at AUROC, I still do not know the business impact of my chosen cut-off.  
+If I only look at the confusion matrix at one threshold, I may miss the broader ranking quality of the model.
+
+So the correct answer is:
+
+> I use AUROC/Gini/KS to judge discrimination and rank ordering, then I use confusion-matrix-based metrics to choose and defend an operating threshold.
+
+That is exactly how these pieces should connect in my head.
+
+---
+
+## 5.8 Metrics are not everything
 
 A model can have acceptable AUROC or KS and still be problematic if:
 
@@ -932,11 +1437,12 @@ A model can have acceptable AUROC or KS and still be problematic if:
 - the variables are unstable
 - the preprocessing is inconsistent
 - the model drifts after deployment
+- the model is poorly calibrated
+- the cut-off does not match business risk appetite
 
 That is exactly why the monitoring part matters.
 
 ---
-
 # Part 6 — Monitoring: What Happens After the PD Model Is Built
 
 This is where many beginners think the project is “finished,” but it is not.

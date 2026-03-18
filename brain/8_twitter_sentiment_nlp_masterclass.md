@@ -18,7 +18,7 @@ tags:
   - model-evaluation
   - data-science
   - customer-analytics
-cluster: "04 — Applied Machine Learning Projects"
+cluster: "03 — Applied Machine Learning Projects"
 progress: 0
 links:
   - "[[Tharun-Kumar-Gajula]]"
